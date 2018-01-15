@@ -15,7 +15,7 @@ directory. These files will be loaded if specified in the plugin configuration, 
             "apply_to": ["tokens", "tags", "categories"],
             "dictionaries": {
                 "all": ["stop-words-{{LANG}}", "generic-stop-words"],
-                "tokens": ["stop-words-{{LANG}}-tokens", "some-tokens", "[word1, word2, ...]"],
+                "tokens": ["stop-words-{{LANG}}-tokens", "some-tokens", "[word1,word2,...]"],
                 "tags": ["stop-words-{{LANG}}-tags"],
                 "categories": ["stop-words-{{LANG}}-categories", "exclude-categories"]
             }
@@ -27,7 +27,8 @@ Where:
 
 * `apply_to` defines which elements will be marked for stop word removal among `tokens`, `tags` and `categories`
 * `dictionaries` contains lists of file names containing stop words for all or some among tokens, tags, categories, or 
-the list of stopwords specified with string like `[word1, word2, ...]` in lower case
+the list of stopwords specified with string like `[word1,word2, ...]` in lower case, and with no space between words 
+and commas
 * `{{LANG}}` is a placeholder for a two-character lang code that will be replaced at runtime with the message language
   (this way you can create multiple stop word lists, and each can be specific for a particular element type and for a 
   language)
