@@ -5,6 +5,7 @@ import com.github.frapontillo.pulse.crowd.data.entity.Message;
 import com.github.frapontillo.pulse.crowd.data.entity.Tag;
 import com.github.frapontillo.pulse.crowd.data.entity.Token;
 import com.github.frapontillo.pulse.crowd.remstopword.StopWordRemover;
+import com.github.frapontillo.pulse.util.PulseLogger;
 import org.apache.commons.io.IOUtils;
 
 import java.util.*;
@@ -135,16 +136,33 @@ public class SimpleStopWordRemover extends StopWordRemover<StopWordConfig> {
      * Return a dictionary containing all of the term included in the files whose names are
      * included in the input list.
      *
-     * @param fileNames A {@link List} of {@link String} representing the files to read.
+     * @param fileNames A {@link List} of {@link String} representing the files to read or the list itself (specified
+     *                  with string like [word1, word2])
      *
      * @return A {@link HashSet<String>} containing all of the dictionary terms.
      */
     private HashSet<String> getDictionariesByFileNames(List<String> fileNames) {
         HashSet<String> set = new HashSet<>();
-        for (String fileName : fileNames) {
-            set.addAll(getDictionaryByFileName(fileName));
-        }
-        set.addAll(punctuation);
+        try {
+            for (String fileName : fileNames) {
+
+                // if the input is not a file name
+                if (fileName.startsWith("[")) {
+                    String[] stopwords = fileName.replace("[", "")
+                            .replace("]", "")
+                            .split(",");
+
+                    for (String word: stopwords) {
+                        set.add(word);
+                    }
+                } else {
+                    set.addAll(getDictionaryByFileName(fileName));
+                }
+            }
+            set.addAll(punctuation);
+
+        } catch (Exception ignored) {}
+
         return set;
     }
 
